@@ -9,7 +9,7 @@
 
   	</include>
 
-	<node name="node" pkg="simulation_sound_play" type="node.py" args="1"/>
+	<node name="node2" pkg="simulation_sound_play" type="node2.py" args="1"/>
 	<node name="sound_play" pkg="sound_play" type="soundplay_node.py"/>
 		
 		
