@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import time
 import sys
 import rospy
 from geometry_msgs.msg import Pose
@@ -101,6 +102,7 @@ class Move():
 				
 if __name__ == '__main__':
 	rospy.init_node('Node', anonymous = True)
+	time.sleep(5)
 	#s = 'going right'
 	#voice = 'voice_kal_diphone'
     	#volume = 1.0
