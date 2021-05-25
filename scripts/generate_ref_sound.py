@@ -34,6 +34,7 @@ class Move():
 		self.point.position.z = 1
 		self.pose_now = Pose()
 		self.pose_prev = Pose()
+		self.count = 0
 
 		
 
@@ -44,37 +45,52 @@ class Move():
 		self.sound.volume = 1.0 
 		self.sound.arg2 = 'voice_kal_diphone'
 
-		self.diff_x = 0
-		self.diff_y = 0
-		self.diff_z = 0
-
-		self.vel_x = 0
-		self.vel_y = 0
-		self.vel_z = 0
 		
+		self.diff_x, self.vel_x = 0, 0
+		self.diff_y, self.vel_y = 0, 0 
+		self.diff_z, self.vel_z = 0, 0
+
 		self.check_dir()
 		
 		
 		if(self.bool_x == True):
-			if(self.diff_x > 0 or self.vel_x >= 0.1):
-				self.vel_x = self.vel_x - 0.1
+			if(self.diff_x > 0):
 				self.sound.arg = 'going right'
 			else:
 				self.sound.arg = 'going left'
 		elif(self.bool_y == True):
-			if(self.diff_y > 0 or self.vel_y >= 0.1):
-				self.vel_y = self.vel_y - 0.1
+			if(self.diff_y > 0):
 				self.sound.arg = 'going forward'
 			else:
 				self.sound.arg = 'going backwards'
 		elif(self.bool_z == True):
-			if(self.diff_z > 0 or self.vel_z >= 0.1):
-				self.vel_z = self.vel_z - 0.1
+			if(self.diff_z > 0):
 				self.sound.arg = 'going up'
 			else:
 				self.sound.arg = 'going down'
 		else:
 			self.sound.arg = 'beep'
+
+		
+
+		if(self.bool_x == True):
+			if(self.vel_x > 0):
+				self.sound.arg = 'going right'
+			else:
+				self.sound.arg = 'going left'
+		elif(self.bool_y == True):
+			if(self.vel_y > 0):
+				self.sound.arg = 'going forward'
+			else:
+				self.sound.arg = 'going backwards'
+		elif(self.bool_z == True):
+			if(self.vel_z > 0):
+				self.sound.arg = 'going up'
+			else:
+				self.sound.arg = 'going down'
+		else:
+			self.sound.arg = 'beep'
+		
 		
 
 		
@@ -144,57 +160,71 @@ class Move():
 			self.diff_x = self.pose_now.position.x - self.pose_prev.position.x 
 			self.diff_y = self.pose_now.position.y - self.pose_prev.position.y 
 			self.diff_z = self.pose_now.position.z - self.pose_prev.position.z 
+			
+			self.abs_x = abs(self.diff_x)
+			self.abs_y = abs(self.diff_y)
+			self.abs_z = abs(self.diff_z)
+			
 		
-			if (self.diff_x > self.diff_y and self.diff_x > self.diff_z) or (self.diff_x < self.diff_y and self.diff_x < self.diff_z):
+			if (self.abs_x > self.abs_y and self.abs_x > self.abs_z):
 				self.bool_x = True
 				self.bool_y = False
 				self.bool_z = False
-			elif (self.diff_y > self.diff_x and self.diff_y > self.diff_z) or (self.diff_y < self.diff_x and self.diff_y < self.diff_z):
+			elif (self.abs_y > self.diff_x and self.abs_y > self.abs_z):
 				self.bool_x = False
 				self.bool_y = True
 				self.bool_z = False
-			elif (self.diff_z > self.diff_y and self.diff_z > self.diff_x) or (self.diff_z < self.diff_y and self.diff_z < self.diff_x):
+			elif (self.abs_z > self.abs_y and self.abs_z > self.abs_x):
 				self.bool_x = False
 				self.bool_y = False
 				self.bool_z = True
 
 		elif(self.control_mode == -1):
+			if self.pose.position.x % 0.125 == 0 or self.pose.position.y % 0.125 == 0 or self.pose.position.z % 0.125 == 0:
+				
+				if self.count % 4 == 0:
 
-			
-			
-			self.vel_x = round(self.vel.twist.twist.linear.x)
-			self.vel_y = round(self.vel.twist.twist.linear.y)
-			self.vel_z = round(self.vel.twist.twist.linear.z)
+					self.vel_x = self.vel.twist.twist.linear.x
+					self.vel_y = self.vel.twist.twist.linear.y
+					self.vel_z = self.vel.twist.twist.linear.z
+		
+					self.vel_abs_x = abs(self.vel_x)
+					self.vel_abs_y = abs(self.vel_y)
+					self.vel_abs_z = abs(self.vel_z) - 0.2
 
-			if ((self.vel_x >= 0 and self.vel_x < 2) or (self.vel_x <= 0 and self.vel_x > -2)):
-				self.vel_x = self.vel_x + 0.1
-				self.bool_x = True
-				self.bool_y = False
-				self.bool_z = False
-			elif ((self.vel_y >= 0 and self.vel_z < 2) or (self.vel_y <= 0 and self.vel_y > -2)):
-				self.vel_y = self.vel_y + 0.1
-				self.bool_x = False
-				self.bool_y = True
-				self.bool_z = False
-			elif ((self.vel_z >= 0 and self.vel_z < 1) or (self.vel_z <= 0 and self.vel_z > -1)):
-				self.vel_z = self.vel_z + 0.1
-				self.bool_x = False
-				self.bool_y = False
-				self.bool_z = True
-			else:
-				self.bool_x = False
-				self.bool_y = False
-				self.bool_z = False
+					print("x:" + str(self.vel_x))
+					print("y:" + str(self.vel_y))
+					print("z:" + str(self.vel_z))
 
+					if (self.vel_abs_x > self.vel_abs_y and self.vel_abs_x > self.vel_abs_z):
+						self.bool_x = True
+						self.bool_y = False
+						self.bool_z = False
+					elif (self.vel_abs_y > self.vel_abs_x and self.vel_abs_y > self.vel_abs_z):
+						self.bool_x = False
+						self.bool_y = True
+						self.bool_z = False
+					elif (self.vel_abs_z > self.vel_abs_y and self.vel_abs_z > self.vel_abs_x):
+						self.bool_x = False
+						self.bool_y = False
+						self.bool_z = True
+					else:
+						self.bool_x = False
+						self.bool_y = False
+						self.bool_z = False
+				self.count = self.count + 1
+				
 					
 		
 
 	def run(self):
 		while not rospy.is_shutdown():
 			if(self.control_mode == 1):
-				self.generate_reference(0, 1, 0)
+				self.generate_reference(0, 0, 1)
+			
 			elif(self.control_mode == -1):
-				self.generate_reference(0 ,1, 0)
+				self.generate_reference(1 ,0, 0)
+				
 					
 						
 						
@@ -205,7 +235,7 @@ class Move():
 				
 				
 if __name__ == '__main__':
-	rospy.init_node('node2', anonymous = True)
+	rospy.init_node('generate_ref_sound', anonymous = True)
 	time.sleep(5)
 	try:
 		mv = Move()

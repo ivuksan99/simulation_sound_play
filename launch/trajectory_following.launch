@@ -9,8 +9,11 @@
 
   	</include>
 
-	<node name="generate_ref_sound" pkg="simulation_sound_play" type="generate_ref_sound.py" />
+	<node name="joy_pose_republisher" pkg="simulation_sound_play" type="joy_pose_republisher.py"/>
 	<node name="sound_play" pkg="sound_play" type="soundplay_node.py"/>
+	
+	
+	
 		
 		
 	
