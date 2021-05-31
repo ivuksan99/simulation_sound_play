@@ -1,0 +1,6 @@
+1. terminal
+roslaunch simulation_sound_play trajectory_following.launch
+2. terminal 
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py 
+3. terminal
+rosrun simulation_sound_play trajectory_tracking_sound.py
