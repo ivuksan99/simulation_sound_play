@@ -12,3 +12,7 @@ Use pulseaudio enabled Docker to enable access to sound devices.
 
 # TODO: 
  - [ ] Check why UAV climbs at all times
+ - [ ] Check different distances maybe 
+ - [ ] Check how to use EAST/NORTH/WEST/SOUTH convention 
+ - [ ] Define critical height below which UAV says 'GO UP TO PREVENT FALL' 
+ 

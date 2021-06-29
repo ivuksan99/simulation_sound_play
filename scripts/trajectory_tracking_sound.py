@@ -90,21 +90,23 @@ class Trajectory_tracking():
 
 		if(self.bool_x == True):
 			if(self.diff_x > 0):
-				self.sound.arg = 'going right'
+				self.sound.arg = 'go right'
 			else:
-				self.sound.arg = 'going left'
+				self.sound.arg = 'go left'
 		elif(self.bool_y == True):
 			if(self.diff_y > 0):
-				self.sound.arg = 'going forward'
+				self.sound.arg = 'go forward'
 			else:
-				self.sound.arg = 'going backwards'
+				self.sound.arg = 'go backwards'
 		elif(self.bool_z == True):
 			if(self.diff_z > 0):
-				self.sound.arg = 'going up'
+				self.sound.arg = 'go up'
 			else:
-				self.sound.arg = 'going down'
+				self.sound.arg = 'go down'
 		else:
 			self.sound.arg = 'beep'
+
+		rospy.loginfo("Sound feedback: {}".format(str(self.sound.arg).upper()))
 		
 		self.pub_sound.publish(self.sound)
 		
